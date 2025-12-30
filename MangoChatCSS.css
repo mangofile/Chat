@@ -15,7 +15,7 @@
 body.dark-mode {
     /* 深色模式变量 */
     --bg-window: #111111;         /* 窗口深黑背景 */
-    --bg-header: rgba(28, 28, 30, 0.9); /* 顶部深灰背景 */
+    --bg-header: rgba(50, 50, 54, 0.9); /* 顶部深灰背景 */
     --bg-content: #1c1c1e;        /* 输入区深色背景 */
     --text-main: #ffffff;         /* 白色主文字 */
     --text-muted: #8e8e93;        /* 灰色辅助文字 */
@@ -25,15 +25,16 @@ body.dark-mode {
     --bubble-other: #2c2c2e;      /* 深灰色气泡 */
 }
 /* 顶部图标按钮样式 */
-#theme-toggle-btn {
-    transition: transform 0.3s ease, color 0.2s;
-    align-items: center;
-    display: flex;
-    color: var(--text-muted);
-}
-#theme-toggle-btn:hover {
+#theme-toggle-btn, .admin-btn {
     cursor: pointer;
-    color: #000;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#theme-toggle-btn:hover, .admin-btn:hover {
+    color: var(--text-main); /* 悬停时统一变为黑色/白色(根据模式) */
 }
 
 /* 强制图标使用变量 */
@@ -56,7 +57,7 @@ body.dark-mode {
 
     /* 顶部导航 */
     .header-search {
-        height: 64px; background: rgba(255, 255, 255, 1); backdrop-filter: blur(20px);
+        height: 64px; background: var(--bg-header); backdrop-filter: blur(20px);
         border-bottom: 1px solid rgba(0,0,0,0.05); padding: 10px 16px;
         display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10;
     }
@@ -104,7 +105,7 @@ body.dark-mode {
         font-size: 13px !important; line-height: 1.4 !important;
     }
     .self .content-box { background: #c4a5c9; border-top-right-radius: 2px; color: #FFF; }
-    .other .content-box { background: #fff; border-top-left-radius: 2px; }
+    .other .content-box { background: var(--bubble-other); border-top-left-radius: 2px; }
     
     /* 核心修复：强制取消图片消息的背景颜色 */
     .content-box.has-image { background: transparent !important; box-shadow: none !important; padding: 0 !important; }
@@ -117,7 +118,7 @@ body.dark-mode {
     .copy-hint.show { opacity: 1; }
 
     /* 核心修复：Toolbar 工具栏对齐锁定 */
-    .input-area { padding: 12px 16px 30px; border-top: 1px solid rgba(0,0,0,0.1); background: #fff; }
+    .input-area { padding: 12px 16px 30px; border-top: 1px solid rgba(0,0,0,0.1); background: var(--bg-header);  }
     .toolbar { 
         display: flex; align-items: center; gap: 12px; margin-bottom: 8px; position: relative; 
         height: 32px; /* 锁定高度防止错位 */
@@ -175,7 +176,7 @@ body.dark-mode {
     .btn-role-del { color: #ff4d4f; cursor: pointer; font-size: 12px; width: 40px; text-align: center; font-weight: bold; }
     .add-role-row { display: flex; gap: 8px; padding-top: 5px; }
     .add-role-row input { flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; }
-    .btn-role-add { background: var(--primary); color: white; border: none; padding: 0 15px; border-radius: 8px; cursor: pointer; }
+    .btn-role-add { background: var(--primary); color: #000; border: none; padding: 0 15px; border-radius: 8px; cursor: pointer; }
     
     /* 引用回复 - 气泡内小框样式 */
 .quote-area {
@@ -219,3 +220,68 @@ body.dark-mode {
 
 /* 修复视频气泡背景 */
 .content-box.has-media { background: transparent !important; box-shadow: none !important; padding: 0 !important; }
+
+/* 顶部场景切换器样式 */
+.scene-trigger {
+    display: flex; align-items: center; gap: 8px; cursor: pointer;
+    padding: 6px 10px; border-radius: 8px; background: var(--input-bg);
+    max-width: 140px; flex-shrink: 0;
+}
+.scene-trigger span {
+    font-size: 13px; font-weight: 600; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap; color: var(--text-main);
+}
+.scene-icon {
+    width: 24px; height: 24px; border-radius: 4px; background: #ddd;
+    flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center;
+}
+.scene-icon img { width: 100%; height: 100%; object-fit: cover; }
+
+/* 场景下拉菜单 */
+.scene-options-dropdown {
+    position: absolute; top: 60px; left: 16px; width: 200px;
+    background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    display: none; flex-direction: column; z-index: 1000; border: 1px solid var(--border-color);
+}
+.scene-option-item {
+    padding: 10px 12px; display: flex; align-items: center; gap: 10px;
+    cursor: pointer; transition: 0.2s; border-bottom: 1px solid #f5f5f5;
+}
+.scene-option-item:hover { background: #f2f2f7; }
+
+/* 弹窗通用样式（确保和角色管理一致） */
+.custom-modal {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); 
+    display: none; justify-content: center; align-items: center; z-index: 1001;
+}
+
+
+/* --- 场景触发器锁定 --- */
+.scene-trigger {
+    display: flex; align-items: center; gap: 8px; cursor: pointer;
+    padding: 4px 10px; border-radius: 6px; background: var(--input-bg);
+    min-width: 100px; max-width: 140px; flex-shrink: 0;
+}
+.scene-trigger span {
+    font-size: 13px; font-weight: bold; color: var(--text-main);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.scene-icon {
+    width: 24px; height: 24px; border-radius: 4px; background: #ddd;
+    flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center;
+}
+.scene-icon img { width: 100%; height: 100%; object-fit: cover; }
+
+/* --- 场景下拉菜单特调 --- */
+.scene-options-dropdown {
+    position: absolute; top: 60px; left: 16px; width: 180px;
+    background: #fff; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    display: none; flex-direction: column; z-index: 999; border: 1px solid #eee;
+}
+.scene-option-item {
+    padding: 10px; display: flex; align-items: center; gap: 10px;
+    cursor: pointer; border-bottom: 1px solid #f8f8f8;
+}
+
+/* 顶部搜索栏比例优化 */
+.search-wrapper { flex: 1; margin: 0 10px; }
