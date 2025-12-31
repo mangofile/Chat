@@ -1,0 +1,5 @@
+https://github.com/mangofile/Chat/blob/main/MangoChat/ass/MangoChatCSS.css
+https://github.com/mangofile/Chat/blob/main/MangoChat/ass/MangoChatDB.js
+
+https://cdn.jsdelivr.net/gh/mangofile/Chat@main/MangoChat/ass/MangoChatDB.js
+https://cdn.jsdelivr.net/gh/mangofile/Chat@main/MangoChat/ass/MangoChatCSS.css
